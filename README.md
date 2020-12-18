@@ -66,7 +66,7 @@ $ docker network create redisnet
 
 We can now spin up the containers and attach them to their own custom network:
 ```
-$ docker run -d --rm --name redis -p 6379:6379 redis:alpine3.12
+$ docker run -d --rm --name redis redis:alpine3.12
 
 $ docker run -d --rm --name web -p 5000:5000 carmelo0x99/redisweb:1.0
 
@@ -74,13 +74,37 @@ $ docker network connect redisnet redis
 
 $ docker network connect redisnet web
 ```
-
+**NOTE**: Redis listens on port 6379 but there's no need to publish the port externally, as only the "web" container will access it</br>
 A test immediately shows that our app is running:
 ```
 $ curl http://127.0.0.1:5000/
 Hello World! I have been seen b'1' times.
 ```
 
+### The "declarative" method
+A declarative approach allows us to define the desired setup through a configuration file. We'll use the following:
+```
+iversion: "3.8"
+
+services:
+  web:
+    build: .
+    command: python3 app.py
+    container_name: web
+    ports:
+      - "5000:5000"
+    networks:
+      - redisnet
+  redis:
+    image: redis:alpine3.12
+    container_name: redis
+    networks:
+      - redisnet
+
+networks:
+  redisnet:
+    name: redisnet
+```
 
 
 
