@@ -84,7 +84,7 @@ Hello World! I have been seen b'1' times.
 ### The "declarative" method
 A declarative approach allows us to define the desired setup through a configuration file. We'll use the following:
 ```
-iversion: "3.8"
+version: "3.8"
 
 services:
   web:
@@ -106,7 +106,21 @@ networks:
     name: redisnet
 ```
 
+The setup can be brought up with one single command as follows:
+```
+$ docker-compose up -d
+Creating web   ... done
+Creating redis ... done
+```
 
+And the overall status can be shown as:
+```
+docker-compose ps
+Name               Command               State           Ports
+-----------------------------------------------------------------------
+redis   docker-entrypoint.sh redis ...   Up      6379/tcp
+web     python3 ./app.py python3 a ...   Up      0.0.0.0:5000->5000/tcp
+```
 
 
 
