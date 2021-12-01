@@ -78,11 +78,11 @@ $ docker network connect redisnet web
 A test immediately shows that our app is running:
 ```
 $ curl http://127.0.0.1:5000/
-Hello World! I have been seen b'1' times.
+Hello World! I have been seen 1 times.
 ```
 
 ### The "declarative" method
-A declarative approach allows us to define the desired setup through a configuration file. We'll use the following:
+A much recommended declarative approach allows us to define the desired setup through a configuration file. We'll use the following:
 ```
 version: "3"
 
@@ -115,12 +115,18 @@ Creating redis ... done
 
 And the overall status can be shown as:
 ```
-docker-compose ps
+$ docker-compose ps
 Name               Command               State           Ports
 -----------------------------------------------------------------------
 redis   docker-entrypoint.sh redis ...   Up      6379/tcp
 web     python3 ./app.py python3 a ...   Up      0.0.0.0:5000->5000/tcp
 ```
 
+Finally, to stop the services:
+```
+$ docker-compose kill
+Killing redis ... done
+Killing web   ... done
+```
 
 

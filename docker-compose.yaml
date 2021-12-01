@@ -1,4 +1,4 @@
-version: "3.8"
+version: "3"
 
 services:
   web:
@@ -14,7 +14,7 @@ services:
     networks:
       - redisnet
   redis:
-    image: redis:alpine3.12
+    image: redis:alpine
     container_name: redis
     networks:
       - redisnet
