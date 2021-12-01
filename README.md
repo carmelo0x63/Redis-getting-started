@@ -130,7 +130,7 @@ web     python3 ./app.py python3 a ...   Up      0.0.0.0:5000->5000/tcp
 
 Notice how Redis starts counting the hits from scratch:
 ```
-curl http://127.0.0.1:5000/
+$ curl http://127.0.0.1:5000/
 Hello World! I have been seen 1 times.%
 ```
 
@@ -142,7 +142,7 @@ Killing web   ... done
 ```
 
 ### The fun part
-Log into Redis and interact with the DB manually:
+Before stopping the services or while Redis is running in manual mode, one can log into Redis and interact with the DB manually:
 ```
 $ docker exec -it redis bash
 root@07736a5622e9:/data# redis-cli
