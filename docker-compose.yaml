@@ -14,7 +14,7 @@ services:
     networks:
       - redisnet
   redis:
-    image: redis:alpine
+    image: redis:latest
     container_name: redis
     networks:
       - redisnet

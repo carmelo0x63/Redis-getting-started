@@ -1,10 +1,10 @@
-# Redis-test
+# Redis-getting-started
 Just a tiny app to play with Redis
 
 ### The "manual" setup
 Let's start by pulling (i.e. downloading) the images we'll be using:
 ```
-$ docker pull redis:alpine
+$ docker pull redis:latest
 $ docker pull python:3.8-alpine
 ```
 
@@ -42,7 +42,7 @@ ENTRYPOINT ["python3", "./app.py"]
 
 Building the image is as simple as:
 ```
-docker build -t carmelo0x99/redisweb:1.0 .
+$ docker build -t carmelo0x99/redisweb:1.0 .
 Sending build context to Docker daemon  121.3kB
 Step 1/7 : FROM python:3.8-alpine
  ---> d314e28e240c
@@ -66,7 +66,7 @@ $ docker network create redisnet
 
 We can now spin up the containers and attach them to their own custom network:
 ```
-$ docker run -d --rm --name redis redis:alpine
+$ docker run -d --rm --name redis redis:latest
 
 $ docker run -d --rm --name web -p 5000:5000 carmelo0x99/redisweb:1.0
 
@@ -78,7 +78,13 @@ $ docker network connect redisnet web
 A test immediately shows that our app is running:
 ```
 $ curl http://127.0.0.1:5000/
-Hello World! I have been seen 1 times.
+Hello World! I have been seen 1 times.%
+```
+
+To clean up:
+```
+$ docker stop redis
+$ docker stop web
 ```
 
 ### The "declarative" method
@@ -96,7 +102,7 @@ services:
     networks:
       - redisnet
   redis:
-    image: redis:alpine
+    image: redis:latest
     container_name: redis
     networks:
       - redisnet
@@ -122,6 +128,12 @@ redis   docker-entrypoint.sh redis ...   Up      6379/tcp
 web     python3 ./app.py python3 a ...   Up      0.0.0.0:5000->5000/tcp
 ```
 
+Notice how Redis starts counting the hits from scratch:
+```
+curl http://127.0.0.1:5000/
+Hello World! I have been seen 1 times.%
+```
+
 Finally, to stop the services:
 ```
 $ docker-compose kill
@@ -129,4 +141,20 @@ Killing redis ... done
 Killing web   ... done
 ```
 
+### The fun part
+Log into Redis and interact with the DB manually:
+```
+$ docker exec -it redis bash
+root@07736a5622e9:/data# redis-cli
+
+127.0.0.1:6379> ping
+PONG
+
+127.0.0.1:6379> get hits
+"1"
+
+127.0.0.1:6379> quit
+
+root@07736a5622e9:/data# exit
+```
 
