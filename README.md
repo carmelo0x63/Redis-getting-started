@@ -158,3 +158,6 @@ PONG
 root@07736a5622e9:/data# exit
 ```
 
+### More info
+[Redis Quick Start](https://redis.io/topics/quickstart)
+
