@@ -5,7 +5,7 @@ Just a tiny app to play with Redis
 Let's start by pulling (i.e. downloading) the images we'll be using:
 ```
 $ docker pull redis:latest
-$ docker pull python:3.8-alpine
+$ docker pull python:3.9-alpine
 ```
 
 The tiny app we'll be using is built on top of Flask and Redis modules:
@@ -27,7 +27,7 @@ if __name__ == "__main__":
 
 Our app will run in a container whose definition is stored in a Dockerfile:
 ```
-FROM python:3.8-alpine
+FROM python:3.9-alpine
 MAINTAINER carmelo.califano@gmail.com
 
 WORKDIR /srv
@@ -44,7 +44,7 @@ Building the image is as simple as:
 ```
 $ docker build -t carmelo0x99/redisweb:1.0 .
 Sending build context to Docker daemon  121.3kB
-Step 1/7 : FROM python:3.8-alpine
+Step 1/7 : FROM python:3.9-alpine
  ---> d314e28e240c
 ...
 Step 6/7 : EXPOSE 5000
@@ -114,18 +114,17 @@ networks:
 
 The setup can be brought up with one single command as follows:
 ```
-$ docker-compose up -d
+$ docker compose up -d
 Creating web   ... done
 Creating redis ... done
 ```
 
 And the overall status can be shown as:
 ```
-$ docker-compose ps
-Name               Command               State           Ports
------------------------------------------------------------------------
-redis   docker-entrypoint.sh redis ...   Up      6379/tcp
-web     python3 ./app.py python3 a ...   Up      0.0.0.0:5000->5000/tcp
+$ docker compose ps
+NAME      COMMAND                  SERVICE     STATUS      PORTS
+redis     "docker-entrypoint.s…"   redis       running     6379/tcp
+web       "python3 ./app.py py…"   web         running     0.0.0.0:5000->5000/tcp, :::5000->5000/tcp
 ```
 
 Notice how Redis starts counting the hits from scratch:
@@ -136,7 +135,7 @@ Hello World! I have been seen 1 times.%
 
 Finally, to stop the services:
 ```
-$ docker-compose kill
+$ docker compose kill
 Killing redis ... done
 Killing web   ... done
 ```
